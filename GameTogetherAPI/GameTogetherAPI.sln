@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTogetherAPI", "GameTogetherAPI.csproj", "{C38B7511-4307-4C1A-BD36-510A5F1D11D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTogetherAPI.Test", "GameTogetherAPI.Test\GameTogetherAPI.Test.csproj", "{6A6F51B8-0B2D-485D-8954-9E3C1C8625D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C38B7511-4307-4C1A-BD36-510A5F1D11D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C38B7511-4307-4C1A-BD36-510A5F1D11D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C38B7511-4307-4C1A-BD36-510A5F1D11D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A6F51B8-0B2D-485D-8954-9E3C1C8625D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A6F51B8-0B2D-485D-8954-9E3C1C8625D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A6F51B8-0B2D-485D-8954-9E3C1C8625D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A6F51B8-0B2D-485D-8954-9E3C1C8625D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
