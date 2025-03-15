@@ -1,4 +1,4 @@
-name: Docker-CICD
+name: Backend - Docker-CICD
 
 on:
   push:
