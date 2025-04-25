@@ -95,7 +95,7 @@ namespace GameTogetherAPI {
             {
                 options.AddPolicy("AllowFrontend", policy =>
                 {
-                    policy.WithOrigins("https://localhost:5173")
+                    policy.WithOrigins("https://localhost")
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
