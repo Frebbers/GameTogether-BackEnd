@@ -16,4 +16,16 @@ public static class Constants
         {"JwtSettings:Audience", "TestAudience"},
         {"ASPNETCORE_ENVIRONMENT", "Development"}
     };
+
+    // User profile constants
+    internal const int TestUserId = 1;
+    internal const string TestUserDescription = "This is a test description";
+    internal static readonly string TooLongDescription = new string('A', 5001);
+    internal const string DescriptionWithLinks = "Check out my website at https://example.com";
+    internal const string TestRegion = "Europe";
+    
+    // DateTime constants
+    internal static readonly DateTime ValidBirthDate = DateTime.UtcNow.AddYears(-20);
+    internal static readonly DateTime TooYoungBirthDate = DateTime.UtcNow.AddYears(-12);
+    internal static readonly DateTime TooOldBirthDate = DateTime.UtcNow.AddYears(-140);
 }
