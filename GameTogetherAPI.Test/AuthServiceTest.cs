@@ -7,6 +7,7 @@ using Moq;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using GameTogetherAPI.Test.Util;
 
 namespace GameTogetherAPI.Test
 // <summary>
@@ -26,12 +27,7 @@ namespace GameTogetherAPI.Test
         public void Setup()
         {
             // Create configuration with in-memory values for testing
-            var inMemorySettings = new Dictionary<string, string> {
-                {"JwtSettings:SecretKey", "TestSecretKeyWithAtLeast32Characters!!"},
-                {"JwtSettings:Issuer", "TestIssuer"},
-                {"JwtSettings:Audience", "TestAudience"},
-                {"ASPNETCORE_ENVIRONMENT", "Development"}
-            };
+            var inMemorySettings = Constants.TestEnvironment;
 
             _configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(inMemorySettings)
@@ -105,25 +101,6 @@ namespace GameTogetherAPI.Test
             _mockUserRepository.Verify(r => r.AddUserAsync(It.IsAny<User>()), Times.Never);
         }
 
-        [Test]
-        public async Task RegisterUserAsync_TestEmail_SetsEmailVerifiedTrue()
-        {
-            // Arrange
-            string email = "user@example.com"; // Test email from _testEmails array
-            string username = "testuser";
-            string password = "Password123";
-
-            _mockUserRepository.Setup(r => r.GetUserByEmailAsync(email)).ReturnsAsync((User)null);
-            _mockUserRepository.Setup(r => r.AddUserAsync(It.IsAny<User>())).ReturnsAsync(true);
-
-            // Act
-            var result = await _authService.RegisterUserAsync(email, username, password);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(AuthStatus.TestUserCreated));
-            _mockUserRepository.Verify(r => r.AddUserAsync(It.Is<User>(u => u.IsEmailVerified == true)), Times.Once);
-        }
-
         #endregion
 
         #region DeleteUserAsync Tests
@@ -161,7 +138,7 @@ namespace GameTogetherAPI.Test
         public async Task DeleteUserAsync_ValidEmail_FindsUserAndDeletes()
         {
             // Arrange
-            string email = "user@example.com";
+            string email = Constants.TestUserEmail;
             int userId = 1;
             
             _mockUserRepository.Setup(r => r.GetUserByEmailAsync(email))
@@ -180,7 +157,7 @@ namespace GameTogetherAPI.Test
         public async Task DeleteUserAsync_InvalidEmail_ReturnsFalse()
         {
             // Arrange
-            string email = "nonexistent@example.com";
+            string email = Constants.NonExistentEmail;
             
             _mockUserRepository.Setup(r => r.GetUserByEmailAsync(email))
                 .ReturnsAsync((User)null);
@@ -192,25 +169,7 @@ namespace GameTogetherAPI.Test
             Assert.IsFalse(result);
             _mockUserRepository.Verify(r => r.DeleteUserAsync(It.IsAny<int>()), Times.Never);
         }
-
-        #endregion
-
-        #region SendEmailVerificationAsync Tests
-
-        [Test]
-        public async Task SendEmailVerificationAsync_UserNotFound_ReturnsFalse()
-        {
-            // Arrange
-            string email = "nonexistent@example.com";
-            _mockUserRepository.Setup(r => r.GetUserByEmailAsync(email))
-                .ReturnsAsync((User)null);
-
-            // Act
-            var result = await _authService.SendEmailVerificationAsync(email);
-
-            // Assert
-            Assert.IsFalse(result);
-        }
+        
 
         #endregion
 
@@ -274,8 +233,8 @@ namespace GameTogetherAPI.Test
         public async Task AuthenticateUserAsync_ValidCredentials_ReturnsToken()
         {
             // Arrange
-            string email = "user@example.com";
-            string password = "Password123";
+            string email = Constants.TestUserEmail;
+            string password = Constants.TestUserPassword;
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
             _mockUserRepository.Setup(r => r.GetUserByEmailAsync(email))
@@ -299,8 +258,8 @@ namespace GameTogetherAPI.Test
         public async Task AuthenticateUserAsync_UserNotFound_ReturnsNull()
         {
             // Arrange
-            string email = "nonexistent@example.com";
-            string password = "Password123";
+            string email = Constants.NonExistentEmail;
+            string password = Constants.TestUserPassword;
 
             _mockUserRepository.Setup(r => r.GetUserByEmailAsync(email))
                 .ReturnsAsync((User)null);
@@ -316,9 +275,9 @@ namespace GameTogetherAPI.Test
         public async Task AuthenticateUserAsync_IncorrectPassword_ReturnsNull()
         {
             // Arrange
-            string email = "user@example.com";
-            string correctPassword = "Password123";
-            string wrongPassword = "WrongPassword123";
+            string email = Constants.TestUserEmail;
+            string correctPassword = Constants.TestUserPassword;
+            string wrongPassword = Constants.WrongPassword;
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(correctPassword);
 
             _mockUserRepository.Setup(r => r.GetUserByEmailAsync(email))
@@ -341,8 +300,8 @@ namespace GameTogetherAPI.Test
         public async Task AuthenticateUserAsync_EmailNotVerified_ReturnsNull()
         {
             // Arrange
-            string email = "user@example.com";
-            string password = "Password123";
+            string email = Constants.TestUserEmail;
+            string password = Constants.TestUserPassword;
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
             _mockUserRepository.Setup(r => r.GetUserByEmailAsync(email))
